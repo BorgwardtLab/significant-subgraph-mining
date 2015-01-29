@@ -1,5 +1,6 @@
 // main.cpp
 // Siegfried Nijssen, snijssen@liacs.nl, jan 2004.
+// ./gaston -i Chemical_340 -c Chemical_340_class.txt -o output -s stat
 #include <iostream>
 #include <fstream>
 #include "database.h"
@@ -75,9 +76,11 @@ void runGaston() {
 }
 
 void clearGaston() {
+  /*
   minfreq = 1;
   COUNT = 0;
-  THRESHOLD = ALPHA / ((double)N / (double)N_TOTAL); 
+  THRESHOLD = ALPHA / ((double)N / (double)N_TOTAL);
+  */
   statistics.frequenttreenumbers.clear();
   statistics.frequentpathnumbers.clear();
   statistics.frequentgraphnumbers.clear();
@@ -128,8 +131,8 @@ main ( int argc, char *argv[] ) {
   fclose ( input );
 
   readClass(class_file);
-  cerr << "N_TOTAL = " << N_TOTAL << endl;
-  cerr << "N = " << N << endl;
+  cout << "N_TOTAL = " << N_TOTAL << endl;
+  cout << "N = " << N << endl;
 
   if (flag_out) {
     // dooutput = true;
@@ -142,7 +145,7 @@ main ( int argc, char *argv[] ) {
 
   clock_t t2 = clock ();
 
-  statistics.print ();
+  // statistics.print ();
   cout << "Approximate total runtime: " << ( (float) t2 - t1 ) / CLOCKS_PER_SEC << "s" << endl;
   // if (flag_out)
   //   fclose ( output );
@@ -150,14 +153,14 @@ main ( int argc, char *argv[] ) {
   cout << "Corrected significance threshold: " << DELTA << endl;
 
   // re-run Gaston
+  cout << "Rerun Gaston with minfreq: " << minfreq << endl;
   RERUN = true;
   clearGaston();
   runGaston();
 
+  clock_t t3 = clock ();
+
   statistics.print ();
   if (flag_out)
     fclose ( output );
-  DELTA = ALPHA / COUNT; // Corrected significance threshold for each test
-  cout << "Corrected significance threshold: " << DELTA << endl;
-
 }
