@@ -55,4 +55,6 @@ class Statistics {
 
 extern Statistics statistics;
 
+extern bool RERUN;
+
 #endif

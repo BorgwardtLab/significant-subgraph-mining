@@ -221,6 +221,12 @@ void Database::determineCycledNodes ( DatabaseTreePtr tree, vector<int> &nodesta
 }
 
 void Database::edgecount () {
+  if (RERUN) {
+    for (int i = 0; i < nodelabels.size(); i++) {
+      database.nodelabels[i].frequentedgelabels.clear();
+      database.nodelabels[i].frequentedgelabels.clear();
+    }
+  }
   for ( int i = 0; i < edgelabels.size (); i++ ) {
     if ( edgelabels[i].frequency >= minfreq ) {
       nodelabels[edgelabels[i].tonodelabel].frequentedgelabels.push_back ( i );
@@ -244,6 +250,8 @@ bool operator< ( const DatabaseTreeEdge &a, const DatabaseTreeEdge &b ) {
 }
 
 void Database::reorder () {
+  if (RERUN) edgelabelsindexes.clear();
+
   edgelabelsindexes.reserve ( edgelabels.size () );
 
   for ( int i = 0; i < edgelabels.size (); i++ ) {
@@ -265,6 +273,14 @@ void Database::reorder () {
 #endif
   }
 
+  if (RERUN) {
+    for ( int i = 0; i < nodelabels.size(); i++ ) {
+      if ( nodelabels[i].frequency >= minfreq) {
+	nodelabels[i].occurrences.elements.clear();
+      }
+    }
+  }
+
   for ( Tid i = 0; i < trees.size (); i++ ) {
     DatabaseTree &tree = * (trees[i]);
     for ( NodeId j = 0; j < tree.nodes.size (); j++ ) {
@@ -280,12 +296,25 @@ void Database::reorder () {
           )
         );
         int k = 0;
-	for ( int l = 0; l < node.edges.size (); l++ ) {
-          EdgeLabel lab = node.edges[l].edgelabel;
-	  if ( edgelabels[lab].frequency >= minfreq ) {
-	    node.edges[k].edgelabel = edgelabels[node.edges[l].edgelabel].edgelabel; // translate old into new edge labels
-	    node.edges[k].tonode = node.edges[l].tonode;
-	    k++;
+	if (RERUN) {
+	  DatabaseTreeNode &node_original = database_original.trees[i]->nodes[j];
+	  node.edges.resize ( node_original.edges.size() );
+	  for ( int l = 0; l < node.edges.size (); l++ ) {
+	    EdgeLabel lab = node_original.edges[l].edgelabel;
+	    if ( edgelabels[lab].frequency >= minfreq) {
+	      node.edges[k].edgelabel = edgelabels[node_original.edges[l].edgelabel].edgelabel; // translate old into new edge labels
+	      node.edges[k].tonode = node_original.edges[l].tonode;
+	      k++;
+	    }
+	  }
+	} else {
+	  for ( int l = 0; l < node.edges.size (); l++ ) {
+	    EdgeLabel lab = node.edges[l].edgelabel;
+	    if ( edgelabels[lab].frequency >= minfreq ) {
+	      node.edges[k].edgelabel = edgelabels[node.edges[l].edgelabel].edgelabel; // translate old into new edge labels
+	      node.edges[k].tonode = node.edges[l].tonode;
+	      k++;
+	    }
 	  }
 	}
 	node.edges.resize ( k );

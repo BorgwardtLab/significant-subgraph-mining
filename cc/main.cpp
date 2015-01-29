@@ -14,7 +14,7 @@
 using namespace std;
 
 Frequency minfreq = 1;
-Database database;
+Database database, database_original;
 Statistics statistics;
 bool dooutput = false;
 int phase = 3;
@@ -22,8 +22,10 @@ int maxsize = ( 1 << ( sizeof(NodeId)*8 ) ) - 1; // safe default for the largest
 FILE *output;
 
 int N = 0, N_TOTAL = 0;
-double ALPHA = 0.05, THRESHOLD, COUNT = 0;
+double ALPHA = 0.05, THRESHOLD, COUNT = 0, DELTA;
 vector<int> CLASS_VEC;
+
+bool RERUN = false;
 
 void Statistics::print () {
   int total = 0, total2 = 0, total3 = 0;
@@ -54,6 +56,32 @@ void puti ( FILE *f, int i ) {
     k--;
     putc ( array[k], f );
   } while ( k );
+}
+
+void runGaston() {
+  cerr << "Edgecount" << endl;
+  database.edgecount ();
+  cerr << "Reorder" << endl;
+  database.reorder ();
+  initLegStatics ();
+  graphstate.init ();
+  for ( int i = 0; i < database.nodelabels.size (); i++ ) {
+    if ( database.nodelabels[i].frequency >= minfreq &&
+         database.nodelabels[i].frequentedgelabels.size () ) {
+      Path path ( i );
+      path.expand ();
+    }
+  }
+}
+
+void clearGaston() {
+  minfreq = 1;
+  COUNT = 0;
+  THRESHOLD = ALPHA / ((double)N / (double)N_TOTAL); 
+  statistics.frequenttreenumbers.clear();
+  statistics.frequentpathnumbers.clear();
+  statistics.frequentgraphnumbers.clear();
+  statistics.patternsize = 0;
 }
 
 main ( int argc, char *argv[] ) {
@@ -95,6 +123,8 @@ main ( int argc, char *argv[] ) {
   cerr << "Read" << endl;
   FILE *input = fopen ( input_file, "r" );
   database.read ( input );
+  rewind( input );
+  database_original.read ( input );
   fclose ( input );
 
   readClass(class_file);
@@ -105,32 +135,29 @@ main ( int argc, char *argv[] ) {
     // dooutput = true;
     output = fopen ( output_file, "w" );
   }
-  cerr << "Edgecount" << endl;
-  database.edgecount ();
-  cerr << "Reorder" << endl;
-  database.reorder ();
 
   // compute the first threshold for minfreq = 1
   THRESHOLD = ALPHA / ((double)N / (double)N_TOTAL);
-  cerr << "Threshold = " << THRESHOLD << endl;
-
-  initLegStatics ();
-  graphstate.init ();
-  for ( int i = 0; i < database.nodelabels.size (); i++ ) {
-    if ( database.nodelabels[i].frequency >= minfreq &&
-         database.nodelabels[i].frequentedgelabels.size () ) {
-      Path path ( i );
-      path.expand ();
-    }
-  }
+  runGaston();
 
   clock_t t2 = clock ();
 
   statistics.print ();
   cout << "Approximate total runtime: " << ( (float) t2 - t1 ) / CLOCKS_PER_SEC << "s" << endl;
+  // if (flag_out)
+  //   fclose ( output );
+  DELTA = ALPHA / COUNT; // Corrected significance threshold for each test
+  cout << "Corrected significance threshold: " << DELTA << endl;
+
+  // re-run Gaston
+  RERUN = true;
+  clearGaston();
+  runGaston();
+
+  statistics.print ();
   if (flag_out)
     fclose ( output );
+  DELTA = ALPHA / COUNT; // Corrected significance threshold for each test
+  cout << "Corrected significance threshold: " << DELTA << endl;
 
-  cerr << "Corrected significance threshold = " << ALPHA / COUNT << endl;
-  
 }

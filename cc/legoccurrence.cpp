@@ -14,6 +14,10 @@ vector<bool> candidatecloselegsoccsused;
 
 
 void initLegStatics () {
+  if (RERUN) {
+    candidatecloselegsoccs.clear();
+    candidatelegsoccurrences.clear();
+  }
   candidatecloselegsoccs.reserve ( 200 ); // should be larger than the largest structure that contains a cycle
   candidatelegsoccurrences.resize ( database.frequentEdgeLabelSize () );
 }

@@ -146,6 +146,7 @@ void GraphState::init () {
 #endif
   edgessize = 0;
   closecount = 0;
+  if (RERUN) deletededges.clear();
   // 1 extra element on this stack in order to always be able to check the previous element
   vector_push_back ( GSDeletedEdge, deletededges, deletededge );
   deletededge.tonode = deletededge.fromnode = NONODE;
