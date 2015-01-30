@@ -42,7 +42,7 @@ To compile the program, type
 ```
 make
 ```
-
+Please install the "Boost" library to compile it. 
 Then, to run the algorithm, type
 
 ```
