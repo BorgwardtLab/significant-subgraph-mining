@@ -11,14 +11,12 @@ GASTON [1] is used as a frequent subgraph mining algorithm.
 Usage
 -----
 
-Given a graph database and a predetermined significance level, this program computes the corrected significance level for each test and outputs all significant subgraphs.
-
 The input is composed of two files: a graph database (a list of graphs) and a list of class labels.
 In a graph database, each graph is described as follows:
 
 ```
 # <comment>
-t <transaction id>
+t # <transaction id>
 v <node id> <label id>
 e <source node id> <target node id> <label id>
 ```
@@ -28,9 +26,9 @@ For example:
 ```
 # start  
 t # 1        // transaction id is 1
-v 0 1        // node 1 with label 1
-v 1 2        // node 2 with label 2
-e 0 1 3      // edge from node 1 to 2 with label 3
+v 0 1        // node 0 with label 1
+v 1 2        // node 1 with label 2
+e 0 1 0      // edge from node 0 to 1 with label 0
 ```
 
 In the class file, each line contains the class label of the corresponding graph.
@@ -42,7 +40,7 @@ To compile the program, type
 ```
 make
 ```
-Please install the "Boost" library to compile it.
+The "Boost" library is needed to compile it.
 Then, to run the algorithm, type
 
 ```
@@ -63,16 +61,26 @@ Then, to run the algorithm, type
   e 1 2 0
   ```
 
+Arguments
+---------
+
+`-m` Maximum size of each subgraph  
+`-a` Significance level  
+`-i` Input file of graph database  
+`-c` Input file of class labels  
+`-o` Output file of significant subgraphs
+
+
 Example
 -------
 
-There is an example graph database "Chemical_340" and the corresponding class file "Chemical_340_class". To run the algorithm on this database, type:
+There is an example graph database "Chemical_340" and the corresponding class file "Chemical_340_class". To run the algorithm on this database, type
 
 ```
 ./sgmine -i Chemical_340 -c Chemical_340_class -o output
 ```
 
-or if you want to output the resulting statistics to a file "stat", type:
+You can redirect the resulting statistics like
 
 ```
 ./sgmine -i Chemical_340 -c Chemical_340_class -o output > stat

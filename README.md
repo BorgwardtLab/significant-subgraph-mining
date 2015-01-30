@@ -6,6 +6,9 @@ Efficient detection of all significant subgraphs from graph databases while corr
 Summary
 =======
 
+Given a graph database with class labels and significance level &alpha;, this algorithm computes the corrected significance level that strictly controls the FWER under &alpha; and outputs all statistically significant subgraphs.
+
+
 * Scalabel
 * Robust
 
