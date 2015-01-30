@@ -1,6 +1,3 @@
-// main.cpp
-// Siegfried Nijssen, snijssen@liacs.nl, jan 2004.
-// ./gaston -i Chemical_340 -c Chemical_340_class -o output > stat
 #include <iostream>
 #include <fstream>
 #include "database.h"
