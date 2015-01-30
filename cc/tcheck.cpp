@@ -63,7 +63,7 @@ void checkCondition() {
   COUNT += 1.0;
   if (COUNT > THRESHOLD) {
     minfreq++;
-    cout << "<<< Update minfreq >>>" << endl;
+    cerr << "<<< Update minfreq >>>" << endl;
     cerr << "    minfreq: " << minfreq << endl;
     // compute the minimum achievable P value, which is "binom(N, minfreq) / binom(N_TOTAL, minfreq)"
     double minp = 1;

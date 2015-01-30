@@ -1,6 +1,6 @@
 // main.cpp
 // Siegfried Nijssen, snijssen@liacs.nl, jan 2004.
-// ./gaston -i Chemical_340 -c Chemical_340_class.txt -o output -s stat
+// ./gaston -i Chemical_340 -c Chemical_340_class.txt -o output > stat
 #include <iostream>
 #include <fstream>
 #include "database.h"
@@ -85,14 +85,14 @@ void clearGaston() {
 
 main ( int argc, char *argv[] ) {
   clock_t t1 = clock ();
-  cout << "Start Significant Subgraph Mining using GASTON" << endl;
+  cerr << "Start Significant Subgraph Mining using GASTON" << endl;
 
   // In "class_labels_file", 1 is minor class and 0 is major class
-  char *input_file, *class_file, *output_file, *stat_file;
+  char *input_file, *class_file, *output_file;
   bool flag_in = false, flag_out = false;
 
   char opt;
-  while ( ( opt = getopt ( argc, argv, "m:tpa:i:c:o:s:" ) ) != -1 ) {
+  while ( ( opt = getopt ( argc, argv, "m:tpa:i:c:o:" ) ) != -1 ) {
     switch ( opt ) {
     case 'm': maxsize = atoi ( optarg ) - 1; break;
     case 't': phase = 2; break;
@@ -101,7 +101,6 @@ main ( int argc, char *argv[] ) {
     case 'i': input_file = optarg; flag_in = true; break;
     case 'c': class_file = optarg; break;
     case 'o': output_file = optarg; flag_out = true; break;
-    case 's': stat_file = optarg; break;
     }
   }
 
@@ -112,24 +111,24 @@ main ( int argc, char *argv[] ) {
 	 << "-i [input file for graphs]" << endl
 	 << "-c [input file for class labels]" << endl
 	 << "-o [output file for subgraphs]" << endl
-	 << "-s [output file for statistics]" << endl
 	 << endl;
     return 1;
   }
 
-  cout << "Database file read ...";
+  cerr << "Database file read ...";
   FILE *input = fopen ( input_file, "r" );
   database.read ( input );
   rewind( input );
   database_original.read ( input );
   fclose ( input );
-  cout << " end" << endl;
+  cerr << " end" << endl;
 
-  cout << "Class file read ...";
+  cerr << "Class file read ...";
   readClass(class_file);
-  cout << " end" << endl;
-  cout << "Number of graphs in total:       " << N_TOTAL << endl;
-  cout << "Number of graphs in minor class: " << N << endl;
+  cerr << " end" << endl << endl;
+  cout << "Significance level:             \t" << ALPHA << endl;
+  cout << "Number of graphs in total:      \t" << N_TOTAL << endl;
+  cout << "Number of graphs in minor class:\t" << N << endl;
 
   if (flag_out) {
     // output = fopen(output_file, "w");
@@ -138,32 +137,34 @@ main ( int argc, char *argv[] ) {
 
   // compute the first threshold for minfreq = 1
   THRESHOLD = ALPHA / ((double)N / (double)N_TOTAL);
-  cout << endl << "Start GASTON to compute the correction factor (number of testable subgraphs)" << endl;
+  cerr << endl << "Start GASTON to compute the correction factor (number of testable subgraphs)" << endl;
   runGaston();
-  cout << "End GASTON" << endl;
+  cerr << "End GASTON" << endl << endl;
 
   clock_t t2 = clock();
 
-  // cout << "Approximate total runtime: " << ( (float) t2 - t1 ) / CLOCKS_PER_SEC << "s" << endl;
   DELTA = ALPHA / COUNT; // Corrected significance threshold for each test
-  cout << "Root frequency: " << minfreq << endl;
-  cout << "Correction factor: " << COUNT << endl;
-  cout << "Corrected significance level: " << DELTA << endl;
+  cout << "Root frequency:                 \t" << minfreq << endl;
+  cout << "Correction factor:              \t" << COUNT << endl;
+  cout << "Corrected significance level:   \t" << DELTA << endl;
 
-  // re-run Gaston
-  cout << endl << "Start GASTON to enumerate significant subgraphs" << endl;
+  // re-run Gaston to enumerate eignificant subgraphs
+  // Fishers's exact test is performed for each subgraph
+  cerr << endl << "Start GASTON to enumerate significant subgraphs" << endl;
   RERUN = true;
   COUNT = 0.0;
   clearGaston();
   runGaston();
-  cout << "End GASTON" << endl;
+  cerr << "End GASTON" << endl << endl;
 
   clock_t t3 = clock();
 
-  cout << "Number of significant subgraphs: " << COUNT << endl;
+  cout << "Number of significant subgraphs:\t" << COUNT << endl;
+  cout << "Runtime for corr.factor (s):    \t" << ( (float) t2 - t1 ) / CLOCKS_PER_SEC << endl;
+  cout << "Runtime for sig.subgraphs (s):  \t" << ( (float) t3 - t2 ) / CLOCKS_PER_SEC << endl;
+  cout << "Total runtime (s):              \t" << ( (float) t3 - t1 ) / CLOCKS_PER_SEC << endl;
   // statistics.print ();
   if (flag_out) {
-
     fclose ( output );
     OFS.close();
   }
