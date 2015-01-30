@@ -42,7 +42,7 @@ To compile the program, type
 ```
 make
 ```
-Please install the "Boost" library to compile it. 
+Please install the "Boost" library to compile it.
 Then, to run the algorithm, type
 
 ```
@@ -72,7 +72,7 @@ There is an example graph database "Chemical_340" and the corresponding class fi
 ./sgmine -i Chemical_340 -c Chemical_340_class -o output
 ```
 
-or if you want to output resulting statistics to a file "stat", type:
+or if you want to output the resulting statistics to a file "stat", type:
 
 ```
 ./sgmine -i Chemical_340 -c Chemical_340_class -o output > stat
