@@ -1,7 +1,7 @@
 Significant Subgraph Mining with Multiple Testing Correction
 ============================================================
 
-Efficient detection of all significant subgraphs from graph databases while correcting for multiple testing.
+The first algorithm that efficiently finds all significant subgraphs from graph databases while correcting for multiple testing.
 GASTON [1] is used as a frequent subgraph mining algorithm.
 
 [1] Nijssen, S. and Kok, J.: **A Quickstart in Frequent Structure Mining Can
