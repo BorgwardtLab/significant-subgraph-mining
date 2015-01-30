@@ -1,10 +1,10 @@
 GCC=g++ -O3
 ALLFILES=main.cpp database.cpp database.h misc.h patterntree.cpp patterntree.h closeleg.cpp closeleg.h patterngraph.cpp patterngraph.h graphstate.cpp graphstate.h tcheck.cpp tcheck.h
 OBJS=main.o database.o path.o legoccurrence.o patterntree.o patterngraph.o closeleg.o graphstate.o tcheck.o
-gaston: $(OBJS)
-	$(GCC) -o gaston $(OBJS)
+sgmine: $(OBJS)
+	$(GCC) -o sgmine $(OBJS)
 clean:
-	rm $(OBJS); rm gaston
+	rm $(OBJS); rm sgmine
 database.o: database.cpp database.h
 	$(GCC) -c database.cpp
 database.h: legoccurrence.h misc.h
