@@ -2,7 +2,10 @@ Significant Subgraph Mining with Multiple Testing Correction
 ============================================================
 
 Efficient detection of all significant subgraphs from graph databases while correcting for multiple testing.
-GASTON (http://www.liacs.nl/~snijssen/gaston/iccs.html) is used as a frequent subgraph mining algorithm.
+GASTON [1] is used as a frequent subgraph mining algorithm.
+
+[1] Nijssen, S. and Kok, J.: **A Quickstart in Frequent Structure Mining Can
+  Make a Difference,** *ACM SIGKDD*, 647-652 (2004) [http://www.liacs.nl/~snijssen/gaston/iccs.html]
 
 
 Usage
@@ -37,20 +40,17 @@ The class label should be either "0" or "1", and "1" should represent the minori
 To compile the program, type
 
 ```
-$ make
+make
 ```
 
 Then, to run the algorithm, type
 
 ```
-./sgmine -i <input_file> -c <input_class_file> -o <output_file>
+./sgmine -a <alpha> -i <input_file> -c <input_class_file> -o <output_file>
 ```
 
-* `<input_class>` is a
-* Resulting significant subgraphs are written to the file `<output_file>`.
-  The output file has the same format as the input file except for two lines:
-  the support (start from "\#") and the *p*-value (start from "p") of the graph.
-  For example:
+* `<alpha>` is the overall significance level. It is set to be 0.05 if skipped.
+* Resulting significant subgraphs are written to the file `<output_file>`. The output file has the same format as the input file except for two lines: the support (start from "\#") and the *p*-value (start from "p") of the graph. For example:
 
   ```
   # 29         // support of this subgraph
@@ -63,38 +63,25 @@ Then, to run the algorithm, type
   e 1 2 0
   ```
 
-An example graph database "Chemical_340" and corresponding class file "Chemical_340_class" is provided. To run the algorithm on this database, type:
+Example
+-------
+
+There is an example graph database "Chemical_340" and the corresponding class file "Chemical_340_class". To run the algorithm on this database, type:
 
 ```
-./gaston -i Chemical_340 -c Chemical_340_class -o output
+./sgmine -i Chemical_340 -c Chemical_340_class -o output
 ```
 
 or if you want to output resulting statistics to a file "stat", type:
 
 ```
-./gaston -i Chemical_340 -c Chemical_340_class -o output > stat
+./sgmine -i Chemical_340 -c Chemical_340_class -o output > stat
 ```
 
 
-COMMAND LINE OPTIONS
---------------------
--m i: specify that the largest frequent pattern to be examined has i nodes
--t:   only output frequent paths and trees, no cyclic graphs
--p:   only output frequent paths, no trees and cyclic graphs
-
-KNOWN ISSUES
-------------
-Gaston uses occurrence lists to determine the occurrences of a graph.
-These occurrence lists require a lot of main memory. To some extent
-the amount of main memory can be reduced by modifying the typedefs
-for Tids, NodeIds and EdgeLabels in misc.h. Alternatively, download
-the version of Gaston which does not use occurrence lists.
-
-LICENSE
+Contact
 -------
-All files in the main directory come under the LGPL license which can be found in the
-LICENSE file.  If you use this code for scientific purposes, it would be appreciated
-if you add proper references to your publication:
-- Siegfried Nijssen and Joost Kok. A Quickstart in Frequent Structure Mining Can
-  Make a Difference. Proceedings of the SIGKDD, 2004.
-- http://www.liacs.nl/home/snijssen/gaston/
+
+* Author: Mahito Sugiyama
+* Affiliation: ISIR, Osaka University, Japan
+* Mail: mahito@ar.sanken.osaka-u.ac.jp
