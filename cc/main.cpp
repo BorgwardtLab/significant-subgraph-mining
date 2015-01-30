@@ -61,9 +61,9 @@ void puti ( FILE *f, int i ) {
 }
 
 void runGaston() {
-  cerr << "Edgecount" << endl;
+  // cerr << "Edgecount" << endl;
   database.edgecount ();
-  cerr << "Reorder" << endl;
+  // cerr << "Reorder" << endl;
   database.reorder ();
   initLegStatics ();
   graphstate.init ();
@@ -77,11 +77,6 @@ void runGaston() {
 }
 
 void clearGaston() {
-  /*
-  minfreq = 1;
-  COUNT = 0;
-  THRESHOLD = ALPHA / ((double)N / (double)N_TOTAL);
-  */
   statistics.frequenttreenumbers.clear();
   statistics.frequentpathnumbers.clear();
   statistics.frequentgraphnumbers.clear();
@@ -90,9 +85,7 @@ void clearGaston() {
 
 main ( int argc, char *argv[] ) {
   clock_t t1 = clock ();
-  cerr << "GASTON GrAph, Sequences and Tree ExtractiON algorithm" << endl;
-  cerr << "Version 1.0 with Occurrence Lists" << endl;
-  cerr << "Siegfried Nijssen, LIACS, 2004" << endl;
+  cout << "Start Significant Subgraph Mining using GASTON" << endl;
 
   // In "class_labels_file", 1 is minor class and 0 is major class
   char *input_file, *class_file, *output_file, *stat_file;
@@ -124,46 +117,53 @@ main ( int argc, char *argv[] ) {
     return 1;
   }
 
-  cerr << "Read" << endl;
+  cout << "Database file read ...";
   FILE *input = fopen ( input_file, "r" );
   database.read ( input );
   rewind( input );
   database_original.read ( input );
   fclose ( input );
+  cout << " end" << endl;
 
+  cout << "Class file read ...";
   readClass(class_file);
-  cout << "N_TOTAL = " << N_TOTAL << endl;
-  cout << "N = " << N << endl;
+  cout << " end" << endl;
+  cout << "Number of graphs in total:       " << N_TOTAL << endl;
+  cout << "Number of graphs in minor class: " << N << endl;
 
   if (flag_out) {
-    // dooutput = true;
-    output = fopen ( output_file, "w" );
+    // output = fopen(output_file, "w");
     OFS.open(output_file);
   }
 
   // compute the first threshold for minfreq = 1
   THRESHOLD = ALPHA / ((double)N / (double)N_TOTAL);
+  cout << endl << "Start GASTON to compute the correction factor (number of testable subgraphs)" << endl;
   runGaston();
+  cout << "End GASTON" << endl;
 
-  clock_t t2 = clock ();
+  clock_t t2 = clock();
 
-  // statistics.print ();
-  cout << "Approximate total runtime: " << ( (float) t2 - t1 ) / CLOCKS_PER_SEC << "s" << endl;
-  // if (flag_out)
-  //   fclose ( output );
+  // cout << "Approximate total runtime: " << ( (float) t2 - t1 ) / CLOCKS_PER_SEC << "s" << endl;
   DELTA = ALPHA / COUNT; // Corrected significance threshold for each test
-  cout << "Corrected significance threshold: " << DELTA << endl;
+  cout << "Root frequency: " << minfreq << endl;
+  cout << "Correction factor: " << COUNT << endl;
+  cout << "Corrected significance level: " << DELTA << endl;
 
   // re-run Gaston
-  cout << "Rerun Gaston with minfreq: " << minfreq << endl;
+  cout << endl << "Start GASTON to enumerate significant subgraphs" << endl;
   RERUN = true;
+  COUNT = 0.0;
   clearGaston();
   runGaston();
+  cout << "End GASTON" << endl;
 
-  clock_t t3 = clock ();
+  clock_t t3 = clock();
 
-  statistics.print ();
+  cout << "Number of significant subgraphs: " << COUNT << endl;
+  // statistics.print ();
   if (flag_out) {
+
     fclose ( output );
     OFS.close();
   }

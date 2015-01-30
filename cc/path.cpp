@@ -12,7 +12,7 @@ Path::Path ( NodeLabel startnodelabel ) {
   nodelabels.push_back ( startnodelabel );
   frontsymmetry = backsymmetry = totalsymmetry = 0;
 
-  cout << "Root " << database.nodelabels[startnodelabel].inputlabel << endl;
+  // cout << "Root " << database.nodelabels[startnodelabel].inputlabel << endl;
 
   DatabaseNodeLabel &databasenodelabel = database.nodelabels[startnodelabel];
 

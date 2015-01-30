@@ -61,10 +61,10 @@ void checkCondition() {
   Tid id_prev = NOTID;
 
   COUNT += 1.0;
-  // THR = ALPHTA / minp(minfreq)
   if (COUNT > THRESHOLD) {
     minfreq++;
-    cerr << "minfreq = " << minfreq << endl;
+    cout << "<<< Update minfreq >>>" << endl;
+    cerr << "    minfreq: " << minfreq << endl;
     // compute the minimum achievable P value, which is "binom(N, minfreq) / binom(N_TOTAL, minfreq)"
     double minp = 1;
     for (int i = 0; i < minfreq; i++) {
@@ -72,7 +72,7 @@ void checkCondition() {
     }
     // update threshold
     THRESHOLD = ALPHA / minp;
-    cerr << "Threshold = " << THRESHOLD << endl;
+    cerr << "    Admissible number of subgraphs: " << floor(THRESHOLD) << endl;
   }
 }
 
@@ -103,6 +103,7 @@ template<typename T> void computePvalue(vector<T>& elements, Frequency frequency
   double p_value_D = p_value_L < p_value_R ? 2 * p_value_L : 2 * p_value_R;
 
   if (p_value_D < DELTA) {
+    COUNT += 1.0;
     // cout << "p-value: " << p_value_D << endl;
     outputSubgraph(frequency, p_value_D);
   }
