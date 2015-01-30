@@ -12,7 +12,10 @@ Given a graph database (a collection of graphs) with class labels of graphs and 
 
 Please see the following paper for the detailed information about this algorithm and refer it in your published research:
 
-* Sugiyama, M., López, L. L., Kasenburg, N., Borgwardt, K. M.: **Mining Significant Subgraphs with Multiple Testing Correction,** *Proceedings of the 2015 SIAM International Conference on Data Mining (SDM2015)*, 2015.
+* Sugiyama, M., López, L. L., Kasenburg, N., Borgwardt, K. M.: **Significant Subgraph Mining with Multiple Testing Correction,** *Proceedings of the 2015 SIAM International Conference on Data Mining (SDM2015)*, 2015.
+[[arXiv]](http://arxiv.org/abs/1407.0316)
+
+C++ implementation is available. Please check the directly "cc" for the detailed usage of the program.
 
 Contact
 -------
