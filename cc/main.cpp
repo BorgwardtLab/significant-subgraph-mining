@@ -21,6 +21,7 @@ bool dooutput = false;
 int phase = 3;
 int maxsize = ( 1 << ( sizeof(NodeId)*8 ) ) - 1; // safe default for the largest allowed pattern
 FILE *output;
+ofstream OFS;
 
 int N = 0, N_TOTAL = 0;
 double ALPHA = 0.05, THRESHOLD, COUNT = 0, DELTA;
@@ -137,6 +138,7 @@ main ( int argc, char *argv[] ) {
   if (flag_out) {
     // dooutput = true;
     output = fopen ( output_file, "w" );
+    OFS.open(output_file);
   }
 
   // compute the first threshold for minfreq = 1
@@ -161,6 +163,8 @@ main ( int argc, char *argv[] ) {
   clock_t t3 = clock ();
 
   statistics.print ();
-  if (flag_out)
+  if (flag_out) {
     fclose ( output );
+    OFS.close();
+  }
 }

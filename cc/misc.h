@@ -4,6 +4,7 @@
 #define MISC_H
 #include <vector>
 #include <stdio.h>
+#include <fstream>
 using namespace std;
 
 typedef unsigned char EdgeLabel; // combined node-edge label of the input file.
@@ -56,5 +57,6 @@ class Statistics {
 extern Statistics statistics;
 
 extern bool RERUN;
+extern ofstream OFS;
 
 #endif

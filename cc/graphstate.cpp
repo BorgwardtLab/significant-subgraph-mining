@@ -442,6 +442,25 @@ void GraphState::print ( FILE *f ) {
   }
 }
 
+// added by Mahito Sugiyama 30012015
+void GraphState::print_ofs() {
+  static int counter = 0;
+  counter++;
+  OFS << "t " << counter << endl;
+  for (int i = 0; i < nodes.size(); i++) {
+    OFS << "v " << i << " " << (int)database.nodelabels[nodes[i].label].inputlabel << endl;
+  }
+  for (int i = 0; i < nodes.size(); i++ ) {
+    for (int j = 0; j < nodes[i].edges.size(); j++ ) {
+      GraphState::GSEdge &edge = nodes[i].edges[j];
+      if ( i < edge.tonode ) {
+	OFS << "e " << i << " " << (int)edge.tonode << " " << (int)database.edgelabels[database.edgelabelsindexes[edge.edgelabel]].inputedgelabel << endl;
+      }
+    }
+  }
+}
+
+
 void GraphState::makeState ( DatabaseTree *databasetree ) {
   vector<int> used ( databasetree->nodes.size (), 0 );
   queue<int> nqueue;

@@ -82,6 +82,7 @@ class GraphState {
     void reinsertEdge (); // reinserts last edge on the stack
     NodeId lastNode () const { return nodes.size () - 1; }
     void print ( FILE *f );
+    void print_ofs();
 };
 
 #endif

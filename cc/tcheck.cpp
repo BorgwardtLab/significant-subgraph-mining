@@ -2,12 +2,12 @@
 #include <fstream>
 #include <string>
 #include <stdlib.h>
+#include <boost/math/distributions/hypergeometric.hpp>
 #include "legoccurrence.h"
 #include "closeleg.h"
 #include "database.h"
 #include "graphstate.h"
 #include "tcheck.h"
-#include <boost/math/distributions/hypergeometric.hpp>
 
 // read class labels
 void readClass(char *class_file) {
@@ -36,6 +36,12 @@ void readClass(char *class_file) {
   }
 
   ifs.close();
+}
+
+void outputSubgraph(Frequency frequency, double p_value) {
+  OFS << "# " << frequency << endl;
+  OFS << "p " << p_value << endl;
+  graphstate.print_ofs();
 }
 
 
@@ -97,8 +103,7 @@ template<typename T> void computePvalue(vector<T>& elements, Frequency frequency
   double p_value_D = p_value_L < p_value_R ? 2 * p_value_L : 2 * p_value_R;
 
   if (p_value_D < DELTA) {
-    cout << "p-value: " << p_value_D << endl;
-    // significant_subgraphs.push_back(i);
-    // p_value_vec.push_back(p_value);
+    // cout << "p-value: " << p_value_D << endl;
+    outputSubgraph(frequency, p_value_D);
   }
 }
