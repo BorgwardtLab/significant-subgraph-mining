@@ -5,7 +5,7 @@ Efficient detection of all significant subgraphs from graph databases while corr
 GASTON [1] is used as a frequent subgraph mining algorithm.
 
 [1] Nijssen, S. and Kok, J.: **A Quickstart in Frequent Structure Mining Can
-  Make a Difference,** *ACM SIGKDD*, 647-652 (2004) [http://www.liacs.nl/~snijssen/gaston/iccs.html]
+  Make a Difference,** *ACM SIGKDD*, 647-652, 2004. [http://www.liacs.nl/~snijssen/gaston/iccs.html]
 
 
 Usage
