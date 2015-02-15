@@ -12,8 +12,11 @@ Given a graph database (a collection of graphs), class labels of graphs, and sig
 
 Please see the following paper for the detailed information about this algorithm and refer it in your published research:
 
-* Sugiyama, M., López, L. L., Kasenburg, N., Borgwardt, K. M.: **Significant Subgraph Mining with Multiple Testing Correction,** *Proceedings of the 2015 SIAM International Conference on Data Mining* (SDM15), 2015.
+* Sugiyama, M., Llinares López, F., Kasenburg, N., Borgwardt, K. M.: **Significant Subgraph Mining with Multiple Testing Correction,** *Proceedings of the 2015 SIAM International Conference on Data Mining* (SDM15), 2015.
 [[arXiv]](http://arxiv.org/abs/1407.0316)
+
+Note that only the *testability* is implemented in this distribution and the *effective number of test* proposed in the above paper is not used.
+
 
 GASTON is used as a frequent subgraph mining algorithm:
 
@@ -64,8 +67,8 @@ Then, to run the algorithm, type
 * Resulting significant subgraphs are written to the file `<output_file>`. The output file has the same format as the input file except for two lines: the support (start from "\#") and the *p*-value (start from "p") of the graph. For example:
 
   ```
-  # 29         // support of this subgraph
-  p 1.5841e-07 // p-value of this subgraph
+  # s 29         // support of this subgraph
+  # p 1.5841e-07 // p-value of this subgraph
   t 1
   v 0 0
   v 1 9

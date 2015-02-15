@@ -39,8 +39,8 @@ void readClass(char *class_file) {
 }
 
 void outputSubgraph(Frequency frequency, double p_value) {
-  OFS << "# " << frequency << endl;
-  OFS << "p " << p_value << endl;
+  OFS << "# s " << frequency << endl;
+  OFS << "# p " << p_value << endl;
   graphstate.print_ofs();
 }
 
