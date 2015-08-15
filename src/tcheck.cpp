@@ -91,16 +91,19 @@ template<typename T> void computePvalue(vector<T>& elements, Frequency frequency
 
   // compute p-value from "count", "frequency", "N", and "N_TOTAL"
   boost::math::hypergeometric_distribution<> phyper(frequency, N, N_TOTAL);
-  double p_value_L = 0, p_value_R = 0;
+  double p_value_L = 0, p_value_R = 0, p_value_D = 0;
   if (count == 0) count = 1;
   else if (count == N) count = N - 1;
   if (frequency - count == 0) count = frequency - 1;
   else if (frequency - count == N_TOTAL - N) count = frequency - N_TOTAL + N + 1;
   // if (0 < count && count < N && 0 < frequency - count && frequency - count < (N_TOTAL - N)) {
-  p_value_L = cdf(phyper, count);
-  p_value_R = cdf(complement(phyper, count - 1));
-  // }
-  double p_value_D = p_value_L < p_value_R ? 2 * p_value_L : 2 * p_value_R;
+  if (0 <= count && (frequency + N - N_TOTAL) <= count && count <= N && count <= frequency) {
+    p_value_L = cdf(phyper, count);
+    p_value_R = cdf(complement(phyper, count - 1));
+    p_value_D = p_value_L < p_value_R ? 2 * p_value_L : 2 * p_value_R;
+  } else {
+    p_value_D = 1;
+  }
 
   if (p_value_D < DELTA) {
     COUNT += 1.0;

@@ -162,7 +162,7 @@ main ( int argc, char *argv[] ) {
   cout << "Total runtime (s):              \t" << ( (float) t3 - t1 ) / CLOCKS_PER_SEC << endl;
   // statistics.print ();
   if (flag_out) {
-    fclose ( output );
+    // fclose ( output );
     OFS.close();
   }
 }
