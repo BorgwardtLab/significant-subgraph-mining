@@ -128,7 +128,6 @@ main ( int argc, char *argv[] ) {
   cout << "Number of graphs in minor class:\t" << N << endl;
 
   if (flag_out) {
-    // output = fopen(output_file, "w");
     OFS.open(output_file);
   }
 
@@ -161,8 +160,8 @@ main ( int argc, char *argv[] ) {
   cout << "Runtime for sig.subgraphs (s):  \t" << ( (float) t3 - t2 ) / CLOCKS_PER_SEC << endl;
   cout << "Total runtime (s):              \t" << ( (float) t3 - t1 ) / CLOCKS_PER_SEC << endl;
   // statistics.print ();
+
   if (flag_out) {
-    // fclose ( output );
     OFS.close();
   }
 }

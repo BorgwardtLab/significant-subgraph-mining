@@ -94,10 +94,9 @@ template<typename T> void computePvalue(vector<T>& elements, Frequency frequency
   double p_value_L = 0, p_value_R = 0, p_value_D = 0;
   if (count == 0) count = 1;
   else if (count == N) count = N - 1;
-  if (frequency - count == 0) count = frequency - 1;
-  else if (frequency - count == N_TOTAL - N) count = frequency - N_TOTAL + N + 1;
-  // if (0 < count && count < N && 0 < frequency - count && frequency - count < (N_TOTAL - N)) {
-  if (0 <= count && (frequency + N - N_TOTAL) <= count && count <= N && count <= frequency) {
+  if ((int)frequency - count == 0) count = frequency - 1;
+  else if ((int)frequency - count == N_TOTAL - N) count = (int)frequency - N_TOTAL + N + 1;
+  if (0 < count && ((int)frequency + N - N_TOTAL) < count && count < N && count < (int)frequency) {
     p_value_L = cdf(phyper, count);
     p_value_R = cdf(complement(phyper, count - 1));
     p_value_D = p_value_L < p_value_R ? 2 * p_value_L : 2 * p_value_R;
