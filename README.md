@@ -64,7 +64,7 @@ Then, to run the algorithm, type
 ```
 
 * `<alpha>` is the overall significance level. It is set to be 0.05 if skipped.
-* Resulting significant subgraphs are written to the file `<output_file>`. The output file has the same format as the input file except for two lines: the support (start from "\#") and the *p*-value (start from "p") of the graph. For example:
+* Resulting significant subgraphs are written to the file `<output_file>`. The output file has the same format as the input file except for two lines: the support (start from "\# s") and the *p*-value (start from "\# p") of the graph. For example:
 
   ```
   # s 29         // support of this subgraph
