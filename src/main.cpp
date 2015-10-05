@@ -7,6 +7,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <limits.h>
 #include "tcheck.h"
 
 using namespace std;
@@ -16,7 +17,7 @@ Database database, database_original;
 Statistics statistics;
 bool dooutput = false;
 int phase = 3;
-int maxsize = ( 1 << ( sizeof(NodeId)*8 ) ) - 1; // safe default for the largest allowed pattern
+int maxsize = INT_MAX; // safe default for the largest allowed pattern
 FILE *output;
 ofstream OFS;
 
@@ -80,7 +81,7 @@ void clearGaston() {
   statistics.patternsize = 0;
 }
 
-main ( int argc, char *argv[] ) {
+int main ( int argc, char *argv[] ) {
   clock_t t1 = clock ();
   cerr << "Start Significant Subgraph Mining using GASTON" << endl;
 

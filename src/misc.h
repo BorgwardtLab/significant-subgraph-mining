@@ -7,9 +7,9 @@
 #include <fstream>
 using namespace std;
 
-typedef unsigned char EdgeLabel; // combined node-edge label of the input file.
-typedef unsigned char NodeLabel;
-typedef unsigned short NodeId;
+typedef unsigned int EdgeLabel; // combined node-edge label of the input file.
+typedef unsigned int NodeLabel;
+typedef unsigned int NodeId;
 typedef unsigned int Depth; // unsigned int is more efficient than short, but requires more memory...
 typedef unsigned int Tid;
 typedef unsigned int Frequency;
