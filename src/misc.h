@@ -56,7 +56,8 @@ class Statistics {
 
 extern Statistics statistics;
 
-extern bool RERUN;
+extern bool RERUN, WYLIGHT;
+extern double DELTA;
 extern ofstream OFS;
 
 #endif

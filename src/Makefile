@@ -1,6 +1,6 @@
 GCC=g++ -O3
-ALLFILES=main.cpp database.cpp database.h misc.h patterntree.cpp patterntree.h closeleg.cpp closeleg.h patterngraph.cpp patterngraph.h graphstate.cpp graphstate.h tcheck.cpp tcheck.h
-OBJS=main.o database.o path.o legoccurrence.o patterntree.o patterngraph.o closeleg.o graphstate.o tcheck.o
+ALLFILES=main.cpp database.cpp database.h misc.h patterntree.cpp patterntree.h closeleg.cpp closeleg.h patterngraph.cpp patterngraph.h graphstate.cpp graphstate.h tcheck.cpp tcheck.h wy.cpp wy.h permutation.cpp permutation.h var_declare.h
+OBJS=main.o database.o path.o legoccurrence.o patterntree.o patterngraph.o closeleg.o graphstate.o tcheck.o wy.o permutation.o
 sgmine: $(OBJS)
 	$(GCC) -o sgmine $(OBJS)
 clean:
@@ -30,3 +30,7 @@ graphstate.o: graphstate.cpp graphstate.h database.h misc.h
 graphstate.h: misc.h
 tcheck.o: tcheck.cpp tcheck.h legoccurrence.h closeleg.h database.h graphstate.h
 	$(GCC) -c tcheck.cpp
+wy.o: wy.cpp wy.h permutation.h var_declare.h
+	$(GCC) -c wy.cpp
+permutation.o: permutation.cpp permutation.h var_declare.h
+	$(GCC) -c permutation.cpp

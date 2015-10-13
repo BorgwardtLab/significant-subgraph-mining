@@ -6,22 +6,33 @@ The first algorithm that efficiently finds all significant subgraphs from graph 
 Summary
 -------
 
-Given a graph database (a collection of graphs), class labels of graphs, and significance level &alpha;, this algorithm efficiently computes:
-* the corrected significance level for each test that strictly controls the FWER under &alpha;, and
-* all subgraphs that are statistically significantly associated with the class membership.
+Given a graph database (a collection of graphs), class labels of graphs, and significance threshold &alpha;, this algorithm performs:
 
-Please see the following paper for the detailed information about this algorithm and refer it in your published research:
+* efficient computation of the *corrected significance threshold* for each test that strictly controls the FWER under &alpha;
+* enumeration of *all subgraphs* that are statistically significantly associated with the class membership
 
-* Sugiyama, M., Llinares López, F., Kasenburg, N., Borgwardt, K. M.: **Significant Subgraph Mining with Multiple Testing Correction,** *Proceedings of the 2015 SIAM International Conference on Data Mining* (SDM15), 2015.
-[[arXiv]](http://arxiv.org/abs/1407.0316)
+Two methods are implemented for computing the corrected significance threshold:
 
-Note that only the *testability* is implemented in this distribution and the *effective number of test* proposed in the above paper is not used.
+* *Tarone's testability* correction (without `-w` option, default):
+  * Computation is fast but FWER control is not optimal (the actual FWER is smaller than &alpha;)
+* *Westfall-Young permutation* correction (with `-w` option)
+  * Slower than the above but optimal FWER control is achieved (the actual FWER is almost &alpha;)
+  * This method is called **Westfall-Young light** and its itemset mining version is available at [here](https://www.bsse.ethz.ch/mlcb/research/machine-learning/wylight.html)
 
+Please see the following papers for the detailed information about this algorithm and refer them in your published research:
 
-GASTON is used as a frequent subgraph mining algorithm:
+* For Tarone's testability correction:
+  * Sugiyama, M., Llinares-López, F., Kasenburg, N., Borgwardt, K. M.: **Significant Subgraph Mining with Multiple Testing Correction,** *Proceedings of the 2015 SIAM International Conference on Data Mining* (SDM2015), 199-207, 2015.
+[[PDF]](http://epubs.siam.org/doi/pdf/10.1137/1.9781611974010.5)
+* For Westfall-Young permutation correction:
+  * Llinares-López, F., Sugiyama, M., Papaxanthos, L., Borgwardt, K. M.:
+**Fast and Memory-Efficient Significant Pattern Mining via Permutation Testing,** *Proceedings of the 21st ACM SIGKDD Conference on Knowledge Discovery and Data Mining* (KDD2015), 725-734, 2015.
+[[PDF]](http://dl.acm.org/ft_gateway.cfm?id=2783363)
+
+[GASTON](http://www.liacs.nl/~snijssen/gaston/iccs.html) is used as a frequent subgraph mining algorithm:
 
 * Nijssen, S. and Kok, J.: **A Quickstart in Frequent Structure Mining Can
-  Make a Difference,** *Proceedings of the 10th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining* (KDD-2004), 647-652, 2004. [http://www.liacs.nl/~snijssen/gaston/iccs.html]
+  Make a Difference,** *Proceedings of the 10th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining* (KDD2004), 647-652, 2004.
 
 
 Usage
@@ -48,7 +59,7 @@ e 0 1 0      // edge from node 0 to 1 with label 0
 ```
 
 In the class file, each line contains the class label of the corresponding graph.
-The class label should be either "0" or "1", and "1" should represent the minority class.
+The class label should be either "0" or "1". Please note that "1" should represent the minority class.
 
 
 To compile the program, go to the "src" directory and type
@@ -63,7 +74,7 @@ Then, to run the algorithm, type
 ./sgmine -a <alpha> -i <input_file> -c <input_class_file> -o <output_file>
 ```
 
-* `<alpha>` is the overall significance level. It is set to be 0.05 if skipped.
+* `<alpha>` is the target FWER. It is set to be 0.05 if skipped.
 * Resulting significant subgraphs are written to the file `<output_file>`. The output file has the same format as the input file except for two lines: the support (start from "\# s") and the *p*-value (start from "\# p") of the graph. For example:
 
   ```
@@ -80,11 +91,14 @@ Then, to run the algorithm, type
 Arguments
 ---------
 
-`-m` Maximum size of each subgraph  
-`-a` Significance level  
-`-i` Input file of graph database  
-`-c` Input file of class labels  
-`-o` Output file of significant subgraphs
+`-w` : Perform Westfall-Young permutation correction if specified  
+`-m <maxsize>` : Maximum size of each subgraph (default: unlimited)  
+`-a <alpha>` : Target FWER (default: 0.05)  
+`-j <perm>` : Number of permutations in `-w` mode (default: 1000)  
+`-r <seed>` : Seed for permutations in `-w` mode (default: 0)  
+`-i <input_file>` : Input file of graph database  
+`-c <input_class_file>` : Input file of class labels  
+`-o <output_file>` : Output file of significant subgraphs
 
 
 Example
@@ -100,6 +114,11 @@ You can redirect the resulting statistics like
 
 ```
 ./sgmine -i Chemical_340 -c Chemical_340_class -o output > stat
+```
+If you use Westfall-Young permutation, type
+
+```
+./sgmine -w -i Chemical_340 -c Chemical_340_class -o output
 ```
 
 

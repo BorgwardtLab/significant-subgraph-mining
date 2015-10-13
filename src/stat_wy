@@ -1,0 +1,11 @@
+Target FWER:                     	0.05
+Number of graphs in total:       	340
+Number of graphs in minor class: 	100
+Maximum size of each subgraph:   	unlimited
+Number of permutations:         	1000
+Seed of permutations:           	0
+Corrected significance threshold:	0.000130111
+Number of significant subgraphs: 	891
+Runtime for correction (s):      	12.23
+Runtime for sig.subgraphs (s):   	1.18
+Total runtime (s):               	13.41
