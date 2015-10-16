@@ -15,7 +15,7 @@
 
 using namespace std;
 
-Frequency minfreq = 1;
+Frequency minfreq = 2;
 Database database, database_original;
 Statistics statistics;
 bool dooutput = false;
