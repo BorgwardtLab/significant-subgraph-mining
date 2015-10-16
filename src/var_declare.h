@@ -33,3 +33,6 @@ extern std::vector<Tid> OCC_VEC;
 
 extern time_t SEED;
 #define TAB "    "
+
+extern int N_SMALL, N_TOTAL;
+extern vector<int> CLASS_VEC;

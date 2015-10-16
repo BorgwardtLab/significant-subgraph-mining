@@ -5,7 +5,7 @@ extern vector<int> CLASS_VEC;
 extern vector<Tid> OCC_VEC;
 
 void readClass(char *class_file);
-void outputSubgraph(Frequency frequency);
+void outputSubgraph(int count, Frequency frequency, double p_value);
 void checkTestable(vector<LegOccurrence>& elements, Frequency frequency);
 void checkTestableCl(vector<CloseLegOccurrence>& elements, Frequency frequency);
 void checkCondition();

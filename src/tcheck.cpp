@@ -32,15 +32,18 @@ void readClass(char *class_file) {
   }
 
   if ((double)N_SMALL > (double)N_TOTAL / 2.0) {
-    cerr << "class 1 should be smalelr than 0" << endl;
-    exit(0);
+    N_SMALL = N_TOTAL - N_SMALL;
+
+    for (vector<int>::iterator itr = CLASS_VEC.begin(), end = CLASS_VEC.end(); itr != end; ++itr) {
+      *itr == 1 ? *itr = 0 : *itr = 1;
+    }
   }
 
   ifs.close();
 }
 
-void outputSubgraph(Frequency frequency, double p_value) {
-  OFS << "# s " << frequency << endl;
+void outputSubgraph(int count, Frequency frequency, double p_value) {
+  OFS << "# s " << count << " " << frequency - count << endl;
   OFS << "# p " << p_value << endl;
   graphstate.print_ofs();
 }
@@ -130,6 +133,6 @@ template<typename T> void computePvalue(vector<T>& elements, Frequency frequency
   if (p_value_D < DELTA) {
     COUNT += 1.0;
     // cout << "p-value: " << p_value_D << endl;
-    outputSubgraph(frequency, p_value_D);
+    outputSubgraph(count, frequency, p_value_D);
   }
 }

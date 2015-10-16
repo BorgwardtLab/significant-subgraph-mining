@@ -9,6 +9,7 @@
 /* CODE DEPENDENCIES */
 #include"permutation.h"
 #include"var_declare.h"
+#include"misc.h"
 
 /* CONSTANT DEFINES */
 #define READ_BUF_SIZ 524288 //Size of the buffer to read chars from file
@@ -35,7 +36,9 @@ void permutation_init(int n_perm, char *labels_file){
 
 	// Obtain number of observations N and number of observations in positive class n
 	// from the class labels file
-	get_N_n(labels_file);
+	// get_N_n(labels_file);
+	N = N_TOTAL;
+	n = N_SMALL;
 
 	// Save core constants as global variables
 	J = n_perm;
@@ -66,7 +69,11 @@ void permutation_init(int n_perm, char *labels_file){
 	for(i=1;i<N;i++) labels_perm[i] = labels_perm[0] + ((long long)i)*J;
 
 	// Read file containing class labels and store them in array labels
-	read_labels_file(labels_file);
+	// read_labels_file(labels_file);
+	for (int i = 0; i < N_TOTAL; i++) {
+	  labels[i] = CLASS_VEC[i];
+	}
+	
 
 	// Initialize random number generator
 	// SEED = time(NULL);
